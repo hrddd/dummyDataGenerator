@@ -3,11 +3,16 @@ import { connect } from 'react-redux'
 import { startClock, serverRenderClock } from '../store'
 import Examples from '../components/examples'
 
-class Index extends React.Component {
+interface Props {
+  startClock: Function
+}
+
+class Index extends React.Component<Props> {
+  timer: NodeJS.Timer | null
   static getInitialProps ({ reduxStore, req }) {
     const isServer = !!req
     // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
-    reduxStore.dispatch(serverRenderClock(isServer))
+    reduxStore.dispatch(serverRenderClock())
 
     return {}
   }
