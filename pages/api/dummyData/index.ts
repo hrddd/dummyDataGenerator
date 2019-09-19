@@ -1,15 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { dummyTypes } from '../../../dummyTypes'
+import { mapValues } from 'lodash'
+import getRandomDescription from '../../../lib/getRandomDescription';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const modifiedData = [];
-  const template = {...req.body};
-  const range = template._range;
-  delete template._range;
-  for(let i = 0; i < range - 1; i++) {
-    modifiedData.push({...template}) // TODO generate dummy
-  }
   switch(req.method) {
     case 'POST':
-      res.status(200).json(JSON.stringify(modifiedData))
+      const dummyData = [];
+      const template = {...req.body};
+      const dummyDataLength = template._dummyDataLength;
+      delete template._dummyDataLength;
+      for(let i = 0; i < dummyDataLength; i++) {
+        const dummyDataItem = mapValues(template, (value, key: string)=>{
+          switch(key) {
+            case dummyTypes.DESCRIPTION: 
+              return getRandomDescription()
+            default:
+              return value
+          }
+        })
+        dummyData.push(dummyDataItem)
+      }
+      res.status(200).json(JSON.stringify(dummyData))
   }
 }

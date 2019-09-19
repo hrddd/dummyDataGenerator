@@ -23,9 +23,9 @@ const templateSelector = (state: ReduxState) => state.template
 function Index () {
   let template = useSelector(templateSelector)
   const [dispatchSetTemplate] = useActions([setTemplate], [])
-  const [range, setRange] = useState(1)
-  const onRangeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
-    setRange(parseInt(e.target.value, 10))
+  const [dummyDataLength, setdummyDataLength] = useState(1)
+  const ondummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
+    setdummyDataLength(parseInt(e.target.value, 10))
   }, [])
   const generareDummyData = useCallback(async ()=>{
     const response = await fetch('/api/dummyData', {
@@ -33,10 +33,10 @@ function Index () {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(Object.assign({}, template, {_range: range}))
+      body: JSON.stringify(Object.assign({}, template, {_dummyDataLength: dummyDataLength}))
     })
     setDummyData(await response.json())
-  }, [range]) // TODO store memo...
+  }, [dummyDataLength]) // TODO store memo...
   // init with localStrage
   useEffect(()=>{
     if(canUseLocalStrage) {
@@ -76,8 +76,8 @@ function Index () {
     <Uploader template={template} onFileChange={onFileChange} isError={isError}/>
     {!isError && template !== null && 
       (<>
-        <input type="range" min="1" max="1000" defaultValue={`${range}`} onChange = {onRangeChange} />
-        length: {range}
+        <input type="range" min="1" max="1000" defaultValue={`${dummyDataLength}`} onChange = {ondummyDataLengthChange} />
+        dummyDataLength: {dummyDataLength}
         <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>
       </>)
     }
