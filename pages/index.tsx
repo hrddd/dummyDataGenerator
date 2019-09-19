@@ -7,6 +7,7 @@ import Uploader from '../components/Uploader'
 import Btn from '../components/Btn'
 import DownloadBtn from '../components/DownloadBtn'
 import canUseLocalStrage from '../lib/canUseLocalStrage';
+import JSONViewer from 'react-json-viewer';
 
 const isJSON = (arg: string) => {
   try {
@@ -43,9 +44,6 @@ function Index () {
   // react
   const [isError, setError] = useState(false)
   const [dummyData, setDummyData] = useState(null)
-  const dummyDataStr = useMemo(()=>{
-    return JSON.stringify(dummyData)
-  },[dummyData])
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     const file = e.target.files[0];
     var reader = new FileReader();
@@ -74,7 +72,7 @@ function Index () {
     {!isError && template !== null && <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>}
     {!isError && dummyData !== null && 
       <>
-        <div>{dummyDataStr}</div>
+        <JSONViewer json={dummyData} />
         <DownloadBtn href={downloadHref} fileName={'dummydata.json'}>Download dummy data</DownloadBtn>
       </>
     }
