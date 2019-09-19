@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-const exampleInitialState = {
+export const exampleInitialState = {
   lastUpdate: 0,
   light: false,
   count: 0
