@@ -24,7 +24,7 @@ function Index () {
   let template = useSelector(templateSelector)
   const [dispatchSetTemplate] = useActions([setTemplate], [])
   const [dummyDataLength, setdummyDataLength] = useState(1)
-  const ondummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
+  const onDummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     setdummyDataLength(parseInt(e.target.value, 10))
   }, [])
   const generareDummyData = useCallback(async ()=>{
@@ -76,7 +76,7 @@ function Index () {
     <Uploader template={template} onFileChange={onFileChange} isError={isError}/>
     {!isError && template !== null && 
       (<>
-        <input type="range" min="1" max="1000" defaultValue={`${dummyDataLength}`} onChange = {ondummyDataLengthChange} />
+        <input type="range" min="1" max="1000" defaultValue={`${dummyDataLength}`} onChange = {onDummyDataLengthChange} />
         dummyDataLength: {dummyDataLength}
         <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>
       </>)
