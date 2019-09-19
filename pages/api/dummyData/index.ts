@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { dummyTypes } from '../../../dummyTypes'
 import { mapValues } from 'lodash'
-import getRandomDescription from '../../../lib/getRandomDescription';
+import Dummy from 'dummy-jp';
+
+const dummy = new Dummy();
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch(req.method) {
@@ -14,7 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         const dummyDataItem = mapValues(template, (value, key: string)=>{
           switch(key) {
             case dummyTypes.DESCRIPTION: 
-              return getRandomDescription()
+              return dummy.generate()
             default:
               return value
           }
