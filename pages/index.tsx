@@ -10,7 +10,6 @@ interface Props {
 class Index extends React.Component<Props> {
   timer: NodeJS.Timer | null
   static getInitialProps ({ reduxStore, req }) {
-    const isServer = !!req
     // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
     reduxStore.dispatch(serverRenderClock())
 
