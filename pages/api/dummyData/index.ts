@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { dummyTypes } from '../../../dummyTypes'
 import { mapValues } from 'lodash'
 import Dummy from 'dummy-jp';
+import dummyDescriptionTemplate from 'dummy-jp/model/merosu.json'
 
-const dummy = new Dummy();
+const dummy = new Dummy(dummyDescriptionTemplate);
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch(req.method) {
