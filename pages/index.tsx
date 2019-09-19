@@ -23,7 +23,7 @@ const templateSelector = (state: ReduxState) => state.template
 function Index () {
   let template = useSelector(templateSelector)
   const [dispatchSetTemplate] = useActions([setTemplate], [])
-  const [range, setRange] = useState(0)
+  const [range, setRange] = useState(1)
   const onRangeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     setRange(parseInt(e.target.value, 10))
   }, [])
