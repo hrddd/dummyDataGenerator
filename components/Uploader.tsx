@@ -1,4 +1,5 @@
-import React, {useMemo} from 'react'
+import React from 'react'
+import JSONViewer from 'react-json-viewer';
 
 interface Props {
   template: JSON,
@@ -7,10 +8,6 @@ interface Props {
 }
 
 function Uploader (props: Props) {
-  const templateStr = useMemo(()=>{
-    return JSON.stringify(props.template)
-  }, [props.template])
-
   return (
     <>
       <form>
@@ -18,7 +15,7 @@ function Uploader (props: Props) {
       </form>
       {props.isError ? (<span>fileTypeError</span>) : (<div>
         <h2>your uploaded file is</h2>
-        {templateStr}
+        <JSONViewer json={props.template} />
       </div>)}
     </>
   )
