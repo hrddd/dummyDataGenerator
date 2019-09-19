@@ -4,7 +4,7 @@ import { mapValues } from 'lodash'
 import Dummy from 'dummy-jp';
 import dummyDescriptionTemplate from 'dummy-jp/model/merosu.json'
 
-const dummy = new Dummy(dummyDescriptionTemplate);
+const dummy = new Dummy({model: dummyDescriptionTemplate});
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch(req.method) {
