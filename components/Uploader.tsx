@@ -14,8 +14,8 @@ function Uploader (props: Props) {
         <input type="file" onChange={ props.onFileChange } />
       </form>
       {props.isError ? (<span>fileTypeError</span>) : (<div>
-        <h2>your uploaded file is</h2>
-        <JSONViewer json={props.template} />
+        <h2>Template is</h2>
+        <JSONViewer json={props.template || {}} />
       </div>)}
     </>
   )
