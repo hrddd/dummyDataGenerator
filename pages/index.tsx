@@ -21,19 +21,22 @@ const isJSON = (arg: string) => {
 const templateSelector = (state: ReduxState) => state.template
 
 function Index () {
-  // redux
   let template = useSelector(templateSelector)
   const [dispatchSetTemplate] = useActions([setTemplate], [])
-  const generareDummyData = async ()=>{
+  const [range, setRange] = useState(1)
+  const onRangeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
+    setRange(parseInt(e.target.value, 10))
+  }, [])
+  const generareDummyData = useCallback(async ()=>{
     const response = await fetch('/api/dummyData', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(template)
+      body: JSON.stringify(Object.assign({}, template, {_range: range}))
     })
     setDummyData(await response.json())
-  } // TODO store memo...
+  }, [range]) // TODO store memo...
   // init with localStrage
   useEffect(()=>{
     if(canUseLocalStrage) {
@@ -41,7 +44,7 @@ function Index () {
     }
   }, [])
 
-  // react
+  // file upload
   const [isError, setError] = useState(false)
   const [dummyData, setDummyData] = useState(null)
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -62,6 +65,8 @@ function Index () {
     };
     reader.readAsText(file);
   }, [])
+
+  // file download
   const downloadHref = useMemo(()=>{
     return "data:application/octet-stream," + encodeURIComponent(JSON.stringify(dummyData));
   }, [dummyData])
@@ -69,11 +74,18 @@ function Index () {
   return (
     <>
     <Uploader template={template} onFileChange={onFileChange} isError={isError}/>
-    {!isError && template !== null && <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>}
+    {!isError && template !== null && 
+      (<>
+        <input type="range" min="1" max="1000" defaultValue={`${range}`} onChange = {onRangeChange} />
+        length: {range}
+        <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>
+      </>)
+    }
     {!isError && dummyData !== null && 
       <>
-        <JSONViewer json={dummyData} />
         <DownloadBtn href={downloadHref} fileName={'dummydata.json'}>Download dummy data</DownloadBtn>
+        <h2>Generated data is</h2>
+        <JSONViewer json={dummyData} />
       </>
     }
     </>
