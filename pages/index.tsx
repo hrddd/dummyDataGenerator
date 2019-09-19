@@ -1,11 +1,12 @@
 import fetch from 'isomorphic-unfetch'
-import React, {useCallback, useState, useMemo} from 'react'
+import React, {useCallback, useState, useMemo, useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useActions } from '../lib/useActions'
 import { setTemplate, ReduxState } from '../store'
 import Uploader from '../components/Uploader'
 import Btn from '../components/Btn'
 import DownloadBtn from '../components/DownloadBtn'
+import canUseLocalStrage from '../lib/canUseLocalStrage';
 
 const isJSON = (arg: string) => {
   try {
@@ -20,7 +21,7 @@ const templateSelector = (state: ReduxState) => state.template
 
 function Index () {
   // redux
-  const template = useSelector(templateSelector)
+  let template = useSelector(templateSelector)
   const [dispatchSetTemplate] = useActions([setTemplate], [])
   const generareDummyData = async ()=>{
     const response = await fetch('/api/dummyData', {
@@ -32,6 +33,12 @@ function Index () {
     })
     setDummyData(await response.json())
   } // TODO store memo...
+  // init with localStrage
+  useEffect(()=>{
+    if(canUseLocalStrage) {
+      dispatchSetTemplate(JSON.parse(localStorage.getItem('dummyDataTemplate')) || null)
+    }
+  }, [])
 
   // react
   const [isError, setError] = useState(false)
@@ -47,6 +54,9 @@ function Index () {
       
       if(typeof content === 'string' && isJSON(content)) {
         setError(false)
+        if(canUseLocalStrage) {
+          localStorage.setItem('dummyDataTemplate', JSON.stringify(JSON.parse(content)));
+        }
         dispatchSetTemplate(JSON.parse(content))
       } else {
         setError(true)
