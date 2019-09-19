@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 export const exampleInitialState = {
   lastUpdate: 0,
   light: false,
-  count: 0
+  count: 0,
+  template: null
 }
 
 export const actionTypes = {
+  SET_TEMPLATE: 'SET_TEMPLATE',
   TICK: 'TICK',
   INCREMENT: 'INCREMENT',
   DECREMENT: 'DECREMENT',
@@ -17,6 +19,10 @@ export const actionTypes = {
 // REDUCERS
 export const reducer = (state = exampleInitialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_TEMPLATE:
+      return Object.assign({}, state, {
+        template: action.template
+      })
     case actionTypes.TICK:
       return Object.assign({}, state, {
         lastUpdate: action.ts,
@@ -40,6 +46,10 @@ export const reducer = (state = exampleInitialState, action) => {
 }
 
 // ACTIONS
+export const setTemplate = (template: Object) => {
+  return { type: actionTypes.SET_TEMPLATE, template: template }
+}
+
 export const serverRenderClock = () => {
   return { type: actionTypes.TICK, light: false, ts: Date.now() }
 }
