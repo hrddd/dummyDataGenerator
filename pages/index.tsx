@@ -27,7 +27,9 @@ function Index () {
   const onDummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     setdummyDataLength(parseInt(e.target.value, 10))
   }, [])
-  const generareDummyData = useCallback(async ()=>{
+
+   // TODO memolize dep [store state template, dummyDataLength]...
+  const generareDummyData = async ()=>{
     const response = await fetch('/api/dummyData', {
       method: 'POST',
       headers: {
@@ -36,7 +38,7 @@ function Index () {
       body: JSON.stringify(Object.assign({}, template, {_dummyDataLength: dummyDataLength}))
     })
     setDummyData(await response.json())
-  }, [dummyDataLength]) // TODO store memo...
+  }
   // init with localStrage
   useEffect(()=>{
     if(canUseLocalStrage) {
