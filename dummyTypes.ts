@@ -1,3 +1,4 @@
 export const dummyTypes = {
-  DESCRIPTION: 'description'
+  DESCRIPTION: 'description',
+  NUMBER: 'number'
 } as const
