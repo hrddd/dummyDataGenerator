@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { dummyTypes } from '../../../dummyTypes'
 import { mapValues } from 'lodash'
 import getOptions from './getOptions'
-import Dummy from 'dummy-jp';
+import Dummy from 'dummy-jp'
 import dummyDescriptionTemplate from 'dummy-jp/model/merosu.json'
+import getRandomJpNameAndKana, {NameAndKana} from './getRandomJpNameAndKana'
 
 const dummy = new Dummy({model: dummyDescriptionTemplate});
 
@@ -15,6 +16,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       const dummyDataLength = template._dummyDataLength;
       delete template._dummyDataLength;
       for(let i = 0; i < dummyDataLength; i++) {
+        let fullName: NameAndKana = null
         const dummyDataItem = mapValues(template, (value, key: string)=>{
           const options = getOptions(value)
           switch(options.___type___) {
@@ -31,6 +33,12 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
               } else {
                 return i * (typeof options.step !== 'undefined' ? options.step : 1)
               }
+            case dummyTypes.FULLNAME:
+              fullName = fullName !== null ? fullName : getRandomJpNameAndKana()
+              return fullName.familyName + ' ' + fullName.firstName
+            case dummyTypes.FULLNAMEKANA:
+              fullName = fullName !== null ? fullName : getRandomJpNameAndKana()
+              return fullName.familyNameKana + ' ' + fullName.firstNameKana
             default:
               return value
           }

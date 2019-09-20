@@ -1,7 +1,7 @@
 {
   "user_id": "number --step 1",
-  "name": "string",
-  "kana": "string",
+  "name": "fullName",
+  "kana": "fullNameKana",
   "avator": "string",
   "hogePercent": "number --mode random --from 0 --to 1 --decimal 3",
   "description": "description"
