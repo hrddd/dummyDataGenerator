@@ -5,18 +5,24 @@ export interface ReduxState {
   lastUpdate: number,
   light: boolean,
   count: number,
-  template: object | null
+  template: object | null,
+  baseTemplate: object | null,
+  injectTemplate: object | null
 }
 
 export const exampleInitialState: ReduxState = {
   lastUpdate: 0,
   light: false,
   count: 0,
-  template: null
+  template: null,
+  baseTemplate: null,
+  injectTemplate: null
 }
 
 export const actionTypes = {
   SET_TEMPLATE: 'SET_TEMPLATE',
+  SET_BASE_TEMPLATE: 'SET_BASE_TEMPLATE',
+  SET_INJECT_TEMPLATE: 'SET_INJECT_TEMPLATE',
   TICK: 'TICK',
   INCREMENT: 'INCREMENT',
   DECREMENT: 'DECREMENT',
@@ -29,6 +35,14 @@ export const reducer = (state = exampleInitialState, action) => {
     case actionTypes.SET_TEMPLATE:
       return Object.assign({}, state, {
         template: action.template
+      })
+    case actionTypes.SET_BASE_TEMPLATE:
+      return Object.assign({}, state, {
+        baseTemplate: action.template
+      })
+    case actionTypes.SET_INJECT_TEMPLATE:
+      return Object.assign({}, state, {
+        injectTemplate: action.template
       })
     case actionTypes.TICK:
       return Object.assign({}, state, {
@@ -55,6 +69,14 @@ export const reducer = (state = exampleInitialState, action) => {
 // ACTIONS
 export const setTemplate = (template: Object) => {
   return { type: actionTypes.SET_TEMPLATE, template: template }
+}
+
+export const setBaseTemplate = (template: Object) => {
+  return { type: actionTypes.SET_BASE_TEMPLATE, template: template }
+}
+
+export const setInjectTemplate = (template: Object) => {
+  return { type: actionTypes.SET_INJECT_TEMPLATE, template: template }
 }
 
 export const serverRenderClock = () => {

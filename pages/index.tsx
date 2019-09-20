@@ -80,6 +80,7 @@ function Index () {
 
   return (
     <>
+    <h2>Template is</h2>
     <Uploader template={template} onFileChange={onFileChange} isError={isError}/>
     {!isError && template !== null && 
       (<>

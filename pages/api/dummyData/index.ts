@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { dummyTypes } from '../../../dummyTypes'
 import { mapValues } from 'lodash'
-import getOptions from './getOptions'
+import getOptions from '../getOptions'
 import Dummy from 'dummy-jp'
 import dummyDescriptionTemplate from 'dummy-jp/model/merosu.json'
 import getRandomJpNameAndKana, {NameAndKana} from './getRandomJpNameAndKana'
@@ -40,6 +40,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
               fullName = fullName !== null ? fullName : getRandomJpNameAndKana()
               return fullName.familyNameKana + ' ' + fullName.firstNameKana
             default:
+              if(value.indexOf('${n}') >= 0) {
+                return value.replace('${n}', i)
+              }
               return value
           }
         })

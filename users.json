@@ -2,7 +2,7 @@
   "id": "number --step 1",
   "name": "fullName",
   "kana": "fullNameKana",
-  "avator": "string",
+  "avator": "/static/sample.png",
   "hogePercent": "number --mode random --from 0 --to 1 --decimal 3",
   "description": "description"
 }
