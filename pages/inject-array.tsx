@@ -103,8 +103,7 @@ function Index () {
     return !isBaseError && !isInjectError
   },[isBaseError, isInjectError])
   const hasAllTemplate = baseTemplate !== null && baseTemplate !== null
-console.log(isNoError)
-console.log(hasAllTemplate)
+
   // file download
   const downloadHref = useMemo(()=>{
     return "data:application/octet-stream," + encodeURIComponent(JSON.stringify(dummyData));
@@ -117,7 +116,7 @@ console.log(hasAllTemplate)
     <Uploader template={injectTemplate} onFileChange={onFileChangeInject} isError={isInjectError}/>
     {isNoError && hasAllTemplate && 
       (<>
-        <input type="text" defaultValue={injectQuery} onChange = {onChangeInjectQuery} placeholder="please input inject query like 'inject --match id/author_id --pick id/title/star'"/>
+        <input type="text" defaultValue={injectQuery} onChange = {onChangeInjectQuery} placeholder="please input inject query like 'inject --key posts --match id/author_id --pick id/title/star'"/>
         <Btn onClick={generareDummyData}>Generare dummy data!!</Btn>
       </>)
     }
