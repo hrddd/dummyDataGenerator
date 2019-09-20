@@ -1,0 +1,8 @@
+{
+  "id": "number --step 1",
+  "title": "this is sample title${n}",
+  "image": "/static/post_image.png",
+  "description": "description",
+  "author_id": "number --mode random --from 0 --to 999 --decimal 0",
+  "star": "number --mode random --from 0 --to 777 --decimal 0"
+}

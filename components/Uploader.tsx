@@ -1,5 +1,16 @@
 import React from 'react'
 import JSONViewer from 'react-json-viewer';
+import styled from 'styled-components'
+
+const Scroller = styled.div`
+  overflow: scroll;
+  padding: 8px;
+  width: 100%;
+  max-height: 200px;
+  border: 2px solid #ddd;
+  border-radius: 2px;
+  box-sizing: border-box;
+`
 
 interface Props {
   template: JSON,
@@ -13,13 +24,14 @@ function Uploader (props: Props) {
       <form>
         <input type="file" onChange={ props.onFileChange } />
       </form>
-      {props.isError ? (<span>fileTypeError</span>) : (<div>
-        <h2>Template is</h2>
-        <JSONViewer json={props.template || {}} />
+      {props.isError && (<span>fileTypeError</span>)}
+      {props.template && (<div>
+        <Scroller>
+          <JSONViewer json={props.template} />
+        </Scroller>
       </div>)}
     </>
   )
 }
-// Uploader.getInitialProps = ({ reduxStore, req }) => {}
 
 export default React.memo(Uploader)
