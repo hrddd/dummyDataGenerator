@@ -1,5 +1,5 @@
 {
-  "user_id": "number --step 1",
+  "id": "number --step 1",
   "name": "fullName",
   "kana": "fullNameKana",
   "avator": "string",
