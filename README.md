@@ -60,8 +60,8 @@ Upload two JSON, and input a query with some options in text field like this.
 ```
 inject --key posts --match id/author_id --pick id/title/star
 ```
-#### key
+#### --key
 
-#### match
+#### --match
 
-#### pick
+#### --pick
