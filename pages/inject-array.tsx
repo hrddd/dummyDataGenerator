@@ -108,7 +108,7 @@ function Index () {
   // file download
   const downloadHref = useMemo(()=>{
     if(!canUseBlob) { return '' }
-    const blob = new Blob([dummyData], {type:'application/json'});
+    const blob = new Blob([JSON.stringify(dummyData)], {type:'text/plain'});
     return URL.createObjectURL(blob);
   }, [dummyData])
   
