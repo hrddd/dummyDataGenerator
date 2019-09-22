@@ -27,10 +27,6 @@ function Index () {
   let injectTemplate = useSelector(injectTemplateSelector)
   const [dispatchSetBaseTemplate, dispatchSetInjectTemplate] = useActions([setBaseTemplate, setInjectTemplate], [])
   const [dummyDataName, setdummyDataName] = useState('')
-  const [dummyDataLength, setdummyDataLength] = useState(1)
-  const onDummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
-    setdummyDataLength(parseInt(e.target.value, 10))
-  }, [])
 
   // init with localStrage
   useEffect(()=>{
