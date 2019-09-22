@@ -85,7 +85,7 @@ function Page ({setBaseTemplate, setInjectTemplate, baseTemplate, injectTemplate
         injectQuery
       }))
     })
-    setDummyData(await response.json())
+    response.status === 200 && setDummyData(await response.json())
   },[baseTemplate, injectTemplate, injectQuery])
   
   const isNoError = useMemo(()=>{

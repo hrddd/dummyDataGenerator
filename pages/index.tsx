@@ -33,7 +33,7 @@ function Page ({setTemplate, template}) {
       },
       body: JSON.stringify(Object.assign({}, template, {_dummyDataLength: dummyDataLength}))
     })
-    setDummyData(await response.json())
+    response.status === 200 && setDummyData(await response.json())
   }, [template, dummyDataLength])
   // init with localStrage
   useEffect(()=>{
