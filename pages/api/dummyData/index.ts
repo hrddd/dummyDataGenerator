@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { dummyTypes } from '../../../dummyTypes'
+import { dummyTypes } from '../../../data/dummyTypes'
 import { mapValues } from 'lodash'
-import getOptions from '../getOptions'
+import getOptions from '../../../lib/getOptions'
 import Dummy from 'dummy-jp'
 import dummyDescriptionTemplate from 'dummy-jp/model/merosu.json'
-import getRandomJpNameAndKana, {NameAndKana} from './getRandomJpNameAndKana'
+import getRandomJpNameAndKana, {NameAndKana} from '../../../lib/getRandomJpNameAndKana'
 
 const dummy = new Dummy({model: dummyDescriptionTemplate});
 

@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch'
 import React, {useCallback, useState, useMemo, useEffect} from 'react'
-import { useSelector } from 'react-redux'
-import { useActions } from '../lib/useActions'
+import { connect } from 'react-redux'
 import { setTemplate, ReduxState } from '../store'
 import Uploader from '../components/Uploader'
 import Btn from '../components/Btn'
@@ -19,19 +18,14 @@ const isJSON = (arg: string) => {
   }
 };
 
-const templateSelector = (state: ReduxState) => state.template
-
-function Index () {
-  let template = useSelector(templateSelector)
-  const [dispatchSetTemplate] = useActions([setTemplate], [])
+function Page ({setTemplate, template}) {
   const [dummyDataName, setdummyDataName] = useState('')
   const [dummyDataLength, setdummyDataLength] = useState(1)
   const onDummyDataLengthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     setdummyDataLength(parseInt(e.target.value, 10))
   }, [])
 
-   // TODO memolize dep [store state template, dummyDataLength]...
-  const generareDummyData = async ()=>{
+  const generareDummyData = useCallback(async ()=>{
     const response = await fetch('/api/dummyData', {
       method: 'POST',
       headers: {
@@ -39,13 +33,13 @@ function Index () {
       },
       body: JSON.stringify(Object.assign({}, template, {_dummyDataLength: dummyDataLength}))
     })
-    setDummyData(await response.json())
-  }
+    response.status === 200 && setDummyData(await response.json())
+  }, [template, dummyDataLength])
   // init with localStrage
   useEffect(()=>{
     if(canUseLocalStrage) {
       setdummyDataName(localStorage.getItem('dummyDataName'))
-      dispatchSetTemplate(JSON.parse(localStorage.getItem('dummyDataTemplate')) || null)
+      setTemplate(JSON.parse(localStorage.getItem('dummyDataTemplate')) || null)
     }
   }, [])
 
@@ -66,7 +60,7 @@ function Index () {
           localStorage.setItem('dummyDataTemplate', JSON.stringify(JSON.parse(content)));
         }
         setdummyDataName(fileName)
-        dispatchSetTemplate(JSON.parse(content))
+        setTemplate(JSON.parse(content))
       } else {
         setError(true)
       }
@@ -102,6 +96,17 @@ function Index () {
     </>
   )
 }
-// Uploader.getInitialProps = ({ reduxStore, req }) => {}
 
-export default Index
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTemplate: (json: object) => {
+      dispatch(setTemplate(json))
+    }
+  }
+}
+
+const mapStateToProps = (state: ReduxState) => {
+  return state
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page)

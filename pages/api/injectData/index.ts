@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { pick } from 'lodash'
-import getOptions from '../getOptions'
+import getOptions from '../../../lib/getOptions'
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch(req.method) {

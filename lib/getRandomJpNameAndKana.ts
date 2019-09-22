@@ -1,4 +1,4 @@
-import dummyNameTemplate from "../../../data/dummyJpNameTemplate.json"
+import dummyNameTemplate from "../data/dummyJpNameTemplate.json"
 
 export interface NameAndKana {
   familyName: string,
