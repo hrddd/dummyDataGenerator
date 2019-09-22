@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch'
 import React, {useCallback, useState, useMemo, useEffect} from 'react'
-import { useSelector } from 'react-redux'
-import { useActions } from '../lib/useActions'
+import { connect } from 'react-redux'
 import { setBaseTemplate, setInjectTemplate, ReduxState } from '../store'
 import Uploader from '../components/Uploader'
 import Btn from '../components/Btn'
@@ -19,21 +18,15 @@ const isJSON = (arg: string) => {
   }
 };
 
-const baseTemplateSelector = (state: ReduxState) => state.baseTemplate
-const injectTemplateSelector = (state: ReduxState) => state.injectTemplate
-
-function Index () {
-  let baseTemplate = useSelector(baseTemplateSelector)
-  let injectTemplate = useSelector(injectTemplateSelector)
-  const [dispatchSetBaseTemplate, dispatchSetInjectTemplate] = useActions([setBaseTemplate, setInjectTemplate], [])
+function Page ({setBaseTemplate, setInjectTemplate, baseTemplate, injectTemplate}) {
   const [dummyDataName, setdummyDataName] = useState('')
 
   // init with localStrage
   useEffect(()=>{
     if(canUseLocalStrage) {
       setdummyDataName(localStorage.getItem('dummyDataName'))
-      dispatchSetBaseTemplate(JSON.parse(localStorage.getItem('dummyDataBaseTemplate')) || null)
-      dispatchSetInjectTemplate(JSON.parse(localStorage.getItem('dummyDataInjectTemplate')) || null)
+      setBaseTemplate(JSON.parse(localStorage.getItem('dummyDataBaseTemplate')) || null)
+      setInjectTemplate(JSON.parse(localStorage.getItem('dummyDataInjectTemplate')) || null)
     }
   }, [])
 
@@ -55,10 +48,10 @@ function Index () {
           setdummyDataName(fileName)
           if(type === 'base') {
             localStorage.setItem('dummyDataBaseTemplate', JSON.stringify(JSON.parse(content)));
-            dispatchSetBaseTemplate(JSON.parse(content))
+            setBaseTemplate(JSON.parse(content))
           } else {
             localStorage.setItem('dummyDataInjectTemplate', JSON.stringify(JSON.parse(content)));
-            dispatchSetInjectTemplate(JSON.parse(content))
+            setInjectTemplate(JSON.parse(content))
           }
         }
       } else {
@@ -76,12 +69,11 @@ function Index () {
   }, [])
 
   // inject
-  // TODO memolize dep [store state template, dummyDataLength]...
   const [injectQuery, setInjectQuery] = useState(null)
   const onChangeInjectQuery = useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
     setInjectQuery(e.target.value)
   }, [])
-  const generareDummyData = async ()=>{
+  const generareDummyData = useCallback(async ()=>{
     const response = await fetch('/api/injectData', {
       method: 'POST',
       headers: {
@@ -94,7 +86,7 @@ function Index () {
       }))
     })
     setDummyData(await response.json())
-  }
+  },[baseTemplate, injectTemplate, injectQuery])
   
   const isNoError = useMemo(()=>{
     return !isBaseError && !isInjectError
@@ -130,6 +122,21 @@ function Index () {
     </>
   )
 }
-// Uploader.getInitialProps = ({ reduxStore, req }) => {}
 
-export default Index
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setBaseTemplate: (json: object) => {
+      dispatch(setBaseTemplate(json))
+    },
+
+    setInjectTemplate: (json: object) => {
+      dispatch(setInjectTemplate(json))
+    }
+  }
+}
+
+const mapStateToProps = (state: ReduxState) => {
+  return state
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page)
