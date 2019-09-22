@@ -8,6 +8,7 @@ import Btn from '../components/Btn'
 import DownloadBtn from '../components/DownloadBtn'
 import canUseLocalStrage from '../lib/canUseLocalStrage';
 import JSONViewer from 'react-json-viewer';
+import canUseBlob from '../lib/canUseBlob';
 
 const isJSON = (arg: string) => {
   try {
@@ -75,7 +76,9 @@ function Index () {
 
   // file download
   const downloadHref = useMemo(()=>{
-    return "data:application/octet-stream," + encodeURIComponent(JSON.stringify(dummyData));
+    if(!canUseBlob) { return '' }
+    const blob = new Blob([JSON.stringify(dummyData)], {type:'text/plain'});
+    return URL.createObjectURL(blob);
   }, [dummyData])
 
   return (
